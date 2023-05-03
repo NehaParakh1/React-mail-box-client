@@ -71,3 +71,11 @@
   background-color: transparent;
   color: #ae82cc;
 }
+
+.link {
+  cursor: pointer;
+  text-decoration: underline;
+  background: transparent;
+  border: none;
+  color: blue;
+}  
