@@ -6,7 +6,7 @@ import ViewMail from './ViewMail';
 
 const Inbox = () => {
     const dispatch = useDispatch();
-    const receivedMail = useSelector((state) => state.mail.receivedMail);
+    const {receivedMail, changed} = useSelector((state) => state.mail);
     const senderMail = useSelector((state) => state.auth.email);
     const email = senderMail.replace("@", "").replace(".", "");
   
@@ -40,7 +40,7 @@ const Inbox = () => {
     };
     useEffect(() => {
         fetchReceivedMail();
-      }, []);
+      }, [changed]);
     
       return (
         <Card>
@@ -68,7 +68,7 @@ const Inbox = () => {
                   View
                 </Button>
                   </td>
-                  <ViewMail message={mail.body} />
+                  <ViewMail mail={mail} email={email} type={'recevied'}/>
                 </tr>
               ))}
             </tbody>
