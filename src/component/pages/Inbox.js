@@ -8,6 +8,7 @@ import useHttp from "../../hooks/use-http";
 const Inbox = () => {
   const { sendRequest } = useHttp();
     const dispatch = useDispatch();
+    
     const { receivedMail, changed } = useSelector((state) => state.mail);
     const senderMail = useSelector((state) => state.auth.email);
     const email = senderMail.replace("@", "").replace(".", "");
@@ -15,21 +16,29 @@ const Inbox = () => {
     console.log(receivedMail)
 
       const viewMailHandler = (mail) => {
+        
         sendRequest({
           url: `https://mail-box-client-2328a-default-rtdb.firebaseio.com/rec${email}/${mail.id}.json`,
           method: "PUT",
           body: { ...mail, isRead: true },
         });
-        console.log(mail.id);
-        dispatch(mailActions.viewMailHandle({ id: mail.id }));
+        console.log(mail);
+        dispatch(mailActions.viewMailHandle({ id: mail.id, mail:mail }));
 
     };
     useEffect(() => {
       const transformData = (data) => {
         const newData = [];
+  let count=0;
         for (let key in data) {
           newData.push({ id: key, ...data[key] });
-        }
+          }
+          for(let i=0;i<newData.length;i++){
+            if(!newData[i].isRead){
+count++
+            }
+          }
+          dispatch(mailActions.updateCount({count:count}))
         dispatch(mailActions.updateReceivedMail({ mail: newData }));
       };
       sendRequest(
@@ -38,7 +47,7 @@ const Inbox = () => {
         },
         transformData
       );
-    }, [sendRequest]);
+    }, [sendRequest, dispatch, email, changed]);
     
       return (
         <Card>
@@ -66,7 +75,7 @@ const Inbox = () => {
                   View
                 </Button>
                   </td>
-                  <ViewMail mail={mail} email={email} type={'recevied'}/>
+                  <ViewMail mail={mail} email={email} type={'received'}/>
                 </tr>
               ))}
             </tbody>

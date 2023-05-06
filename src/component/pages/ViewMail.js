@@ -1,29 +1,35 @@
 import { Modal, Button } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import { mailActions } from "../../store/mail-slice"
-import useHttp from "../../hooks/use-http";
+
 
 const ViewMail = (props) => {
-    const { sendRequest } = useHttp();
+   
     const viewMail = useSelector(state => state.mail.viewMail)
+    const view=useSelector(state=>state.mail.view)
     const dispatch = useDispatch()
     const viewMailHandler = () => {
         dispatch(mailActions.mailHandler())
     }
-
+const email=localStorage.getItem('email');
+const mail=email.replace('@','').replace('.','');
     const deleteMailHandler = async () => {
-        let url;
-        if (props.type === "recevied") {
-          url = `https://mail-box-client-2328a-default-rtdb.firebaseio.com/rec${props.email}/${props.mail.id}.json`;
-          dispatch(mailActions.deleteReceivedMail(props.mail.id));
-        }else{
-            url = `https://mail-box-client-2328a-default-rtdb.firebaseio.com/sent${props.email}/${props.mail.id}.json`;
-          dispatch(mailActions.deleteSentMail(props.mail.id));
+       
+        console.log(view.id)
+        if (props.type === "received") {
+         const response =await fetch (`https://mail-box-client-2328a-default-rtdb.firebaseio.com/rec${mail}/${view.id}.json`,
+          {method:'DELETE',
         }
-        sendRequest({
-            url: url,
-            method: "DELETE",
-          });
+          )
+          dispatch(mailActions.deleteReceivedMail({id: view.id}));
+        }else{
+            const url = await fetch (`https://mail-box-client-2328a-default-rtdb.firebaseio.com/sent${mail}/${view.id}.json`,
+            {method:'DELETE',
+          }
+            );
+          dispatch(mailActions.deleteSentMail({id: view.id}));
+        }
+
         dispatch(mailActions.mailHandler());
       };
 
@@ -38,7 +44,10 @@ const ViewMail = (props) => {
           <Modal.Title>Mail</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {props.mail.body}
+          {console.log(view)}
+
+          {view.body}
+
         </Modal.Body>
         <Modal.Footer>
 
