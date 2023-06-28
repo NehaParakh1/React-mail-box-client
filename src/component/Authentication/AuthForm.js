@@ -69,7 +69,7 @@ const AuthForm = (props) => {
         const data = await response.json();
         console.log(enteredEmail);
         const email = enteredEmail.replace("@", "").replace(".", "");
-        dispatch(authActions.login({ token: data.idToken, email: email }));
+        dispatch(authActions.login({ token: data.idToken, email: enteredEmail }));
       } catch (err) {
         alert(err);
       }
