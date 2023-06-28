@@ -8,6 +8,24 @@ const ViewMail = (props) => {
     const viewMailHandler = () => {
         dispatch(mailActions.mailHandler())
     }
+
+    const deleteMailHandler = async () => {
+        let url;
+        if (props.type === "recevied") {
+          url = `https://mail-box-client-2328a-default-rtdb.firebaseio.com/rec${props.email}/${props.mail.id}.json`;
+        } else{
+          url = `https://mail-box-client-2328a-default-rtdb.firebaseio.com/sent${props.email}/${props.mail.id}.json`;
+        }
+        await fetch(url, { method: "DELETE" });
+        if(props.type === "recevied") {
+          dispatch(mailActions.deleteReceivedMail(props.mail.id));
+        }else{
+          dispatch(mailActions.deleteSentMail(props.mail.id));
+        }
+    
+        dispatch(mailActions.mailHandler());
+      };
+
     return (
         <Modal
         show={viewMail}
@@ -19,15 +37,15 @@ const ViewMail = (props) => {
           <Modal.Title>Mail</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {props.message}
+          {props.mail.body}
         </Modal.Body>
         <Modal.Footer>
 
-          <Button variant="danger">Delete</Button>
+          <Button variant="danger" onClick={deleteMailHandler}>Delete</Button>
         </Modal.Footer>
       </Modal>
     )
 }
 
 
-export default ViewMail
+export default ViewMail;

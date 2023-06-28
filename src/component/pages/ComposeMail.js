@@ -60,6 +60,7 @@ const ComposeMail = (props) => {
               placeholder="name@example.com"
               autoFocus
               ref={emailRef}
+              required
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
@@ -69,11 +70,12 @@ const ComposeMail = (props) => {
               placeholder="subject"
               autoFocus
               ref={subjectRef}
+              required
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
             <Form.Label>Message</Form.Label>
-            <Form.Control as="textarea" rows={3} ref={mailBodyRef}/>
+            <Form.Control as="textarea" rows={3} ref={mailBodyRef} required/>
           </Form.Group>
           <Button variant="primary" type="submit">Send</Button>
         </Form>

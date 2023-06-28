@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import './App.css';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import AuthForm from './component/Authentication/AuthForm';
 import { useSelector,useDispatch } from 'react-redux';
 import Header from './component/Layout/Header';
@@ -35,13 +35,13 @@ function App() {
   return (
     <>
     <Routes>
-      {!isAuthenticated && <Route path="/" element={<AuthForm/>} />}
-        {isAuthenticated && <Route path="/" element={<Header/>}/>}
+      <Route path='/' element={isAuthenticated?<Header/>:<AuthForm/>}>
+      </Route>
       <Route path="/forgotpassword" element={<ForgotPassword/>}> 
       </Route>
-      <Route path="/inbox" element={<Inbox />}>
+      <Route path="/inbox" element={isAuthenticated?<Inbox />:<Navigate to='/'/> }>
       </Route>
-      <Route path="/sent" element={<SentMail/>}>
+      <Route path="/sent" element={isAuthenticated?<SentMail/>:<Navigate to='/'/>}>
         </Route>
     </Routes>
     </>
