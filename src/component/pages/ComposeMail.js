@@ -1,10 +1,11 @@
 import { useRef } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-
+import useHttp from "../../hooks/use-http";
 import { uiActions } from "../../store/ui-slice";
 
 const ComposeMail = (props) => {
+  const {sendRequest} = useHttp()
   const show = useSelector(state => state.ui.show)
   const email = useSelector(state => state.auth.email)
 
@@ -14,7 +15,7 @@ const ComposeMail = (props) => {
   const emailRef = useRef();
   const subjectRef = useRef();
   const mailBodyRef = useRef();
-  const composeMailHandler = async(event) => {
+  const composeMailHandler = (event) => {
     event.preventDefault();
 
      const receiverMail = emailRef.current.value.replace('@', '').replace('.', '')
@@ -29,21 +30,19 @@ const ComposeMail = (props) => {
         subject: subjectRef.current.value,
         body: mailBodyRef.current.value,
       }
-    try {
-    await fetch(`https://mail-box-client-2328a-default-rtdb.firebaseio.com/rec${receiverMail}.json`,{
-        method: 'POST',
-        body: JSON.stringify(recevierMailData)
-      })
 
-      await fetch(`https://mail-box-client-2328a-default-rtdb.firebaseio.com/sent${senderMail}.json`,{
-        method: 'POST',
-        body: JSON.stringify(senderMailData)
-      })
-      
-      dispatch(uiActions.handleShow())
-    }catch(error) {
-      alert(error)
-    }
+      sendRequest({
+        url: `https://mail-box-client-2328a-default-rtdb.firebaseio.com/rec${receiverMail}.json`,
+        method: "POST",
+        body: recevierMailData
+      });
+      sendRequest({
+        url: `https://mail-box-client-2328a-default-rtdb.firebaseio.com/sent${senderMail}.json`,
+        method: "POST",
+        body: senderMailData
+      });
+  
+      dispatch(uiActions.handleShow());
   };
 
   return (
