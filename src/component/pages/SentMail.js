@@ -2,13 +2,18 @@ import { useEffect } from "react";
 import { Table, Button, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { mailActions } from "../../store/mail-slice";
+import ViewMail from "./ViewMail";
 
 const SentMail = () => {
     const dispatch = useDispatch();
     const sentMail = useSelector((state) => state.mail.sentMail);
     const senderMail = useSelector((state) => state.auth.email);
     const mail = senderMail.replace("@", "").replace(".", "");
-  
+   
+    const viewMailHandler = () => {
+      dispatch(mailActions.mailHandler());
+    };
+
     const fetchSentMail = async () => {
       const response = await fetch(
         `https://mail-box-client-2328a-default-rtdb.firebaseio.com/sent${mail}.json`
@@ -46,8 +51,11 @@ const SentMail = () => {
                   <td>{mail.body}</td>
                   <td>{mail.sentTo}</td>
                   <td>
-                    <Button variant="danger">Delete</Button>
+                  <Button variant="success" onClick={viewMailHandler}>
+                  View
+                </Button>
                   </td>
+                  <ViewMail message={mail.body} />
                 </tr>
               ))}
             </tbody>

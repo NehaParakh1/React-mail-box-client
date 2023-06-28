@@ -22,6 +22,7 @@ const ComposeMail = (props) => {
       sender: email,
       subject: subjectRef.current.value,
       body: mailBodyRef.current.value,
+      isRead: false
     };
     const senderMailData = {
         sentTo: emailRef.current.value,
