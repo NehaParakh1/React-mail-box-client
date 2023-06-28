@@ -2,9 +2,11 @@ import React, { useRef } from "react";
 import classes from "./AuthForm.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../store/auth-slice";
+import { useNavigate } from "react-router-dom";
 
 const AuthForm = (props) => {
   const dispatch = useDispatch();
+  const navigate=useNavigate();
   const isLoggedIn = useSelector((state) => state.auth.haveAccount);
 
   const emailInput = useRef();
@@ -76,28 +78,9 @@ const AuthForm = (props) => {
     passwordInput.current.value = ''
   };
 
-  const forgotPasswordHandler = async () => {
-    try {
-      const response = await fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyBfLD1ntDy077V7jZanzcOTGymMrnDokQM",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            requestType: "PASSWORD_RESET",
-            email: emailInput.current.value,
-          }),
-          headers: {
-            "content-type": "application/json",
-          },
-        }
-      );
-      if (!response.ok) {
-        let errorMessage = "Authentication Failed";
-        throw new Error(errorMessage);
-      }
-    } catch (err) {
-      alert(err);
-    }
+  const handleForgotPassword = () => {
+    navigate("/forgotpassword");
+ 
   };
 
   return (
@@ -117,10 +100,8 @@ const AuthForm = (props) => {
             <button type="submit">{isLoggedIn ? "Login" : "SignUp"}</button>
           </div>
           <div className={classes.actions}>
-            {isLoggedIn && (
-              <button type="button" onClick={forgotPasswordHandler}>
-                Forgot Password
-              </button>
+          {isLoggedIn && (
+            <button onClick={handleForgotPassword}>Forgot Password?</button>
             )}
           </div>
         </form>
