@@ -13,11 +13,17 @@ const SentMail = () => {
     const email = senderMail.replace("@", "").replace(".", "");
    console.log(email)
 
-    const viewMailHandler = () => {
-      dispatch(mailActions.mailHandler());
-    };
+    const viewMailHandler = (mail) => {
+      sendRequest({
+        url: `https://mail-box-client-2328a-default-rtdb.firebaseio.com/rec${email}/${mail.id}.json`,
+        method: "PUT",
+        body: { ...mail },
+      });
+      console.log(mail);
+      dispatch(mailActions.viewSentMailHandler({ id: mail.id, mail:mail }));
 
-   
+  };
+    
     useEffect(() => {
         const transformData = (data) => {
       const newData = [];
@@ -32,7 +38,7 @@ const SentMail = () => {
       },
       transformData
     );
-  }, [sendRequest, dispatch, email]);
+  }, [sendRequest, dispatch, email, changed]);
     
       return (
         <Card>
@@ -52,7 +58,7 @@ const SentMail = () => {
                   <td>{mail.body}</td>
                   <td>{mail.sentTo}</td>
                   <td>
-                  <Button variant="success" onClick={viewMailHandler}>
+                  <Button variant="success" onClick={() => viewMailHandler(mail)}>
                   View
                 </Button>
                   </td>

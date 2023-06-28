@@ -10,7 +10,7 @@ import { authActions } from "./store/auth-slice";
 import SentMail from "./component/pages/SentMail";
 
 function App() {
-
+  
   const { isAuthenticated, token, email } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   console.log(email);
