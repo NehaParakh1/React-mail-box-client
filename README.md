@@ -23,6 +23,10 @@ This is a Mailbox Client App built using React and Redux, designed for sending a
 2. Navigate through the app to access your inbox, compose and send emails, and manage your mailbox efficiently.
 3. Enjoy real-time email communication with an intuitive user interface.
 
+# Demo
+
+https://react-mail-box-client.vercel.app/
+
 # Images of the App
 
 ![screenshot](screenshot/Screenshot1.png)
