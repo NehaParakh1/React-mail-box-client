@@ -6,6 +6,7 @@
   color: #fff;
   padding: 10px;
   align-items: center;
+  
 }
 .header-title {
   grid-column: 1;
@@ -30,6 +31,18 @@
   flex-direction: column;
   align-items: center;
 }
+
+.links{
+  text-decoration: none;
+  cursor: pointer;
+  font: inherit;
+  color: white;
+  background-color: rgb(208, 81, 64);
+  border: 1px solid #ee463d;
+  border-radius: 4px;
+  padding: 0.5rem 2.5rem;
+}
+
 .actions button {
   cursor: pointer;
   font: inherit;
