@@ -59,10 +59,10 @@ count++
           </button>
         </div>
         <div className={classes.actions}>
-          <Link to="inbox">Inbox { unread }</Link>
+          <Link className={classes.links} to="inbox">Inbox { unread }</Link>
         </div>
         <div className={classes.actions}>
-          <Link to="sent">Sent Mail</Link>
+          <Link className={classes.links} to="sent">Sent Mail</Link>
         </div>
         <div className={classes.actions}>
         <h6>{mail}</h6>
